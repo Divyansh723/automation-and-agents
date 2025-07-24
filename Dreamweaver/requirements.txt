@@ -1,0 +1,10 @@
+openai-whisper
+langchain-core
+langchain-google-genai
+python-dotenv
+diffusers
+transformers
+accelerate
+torch
+safetensors
+notion-client
