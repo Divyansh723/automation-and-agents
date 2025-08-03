@@ -3,6 +3,24 @@ from scripts.transcribe import transcribe_dream_audio
 from scripts.interpret_dream import interpret_dream 
 from scripts.generate_art import generate_dream_image
 from scripts.journal_entry import save_to_notion
+import cloudinary
+import cloudinary.uploader
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True
+)
+
+def upload_image_cloudinary(image_path):
+    result = cloudinary.uploader.upload(image_path)
+    return result["secure_url"]
+
 
 def run_dream_pipeline():
     print("\n🎤 STEP 1: Transcribing audio...")
@@ -22,12 +40,12 @@ def run_dream_pipeline():
         analysis_path="analysis_outputs/dream_analysis.txt",
         output_path="art_outputs/dream_image.png"
     )
-
+    url = upload_image_cloudinary("art_outputs/dream_image.png")
     print("\n📒 STEP 4: Uploading to Notion...")
     save_to_notion(
         dream_text_path="transcripts/dream_text.txt",
         analysis_path="analysis_outputs/dream_analysis.txt",
-        image_url="https://your-image-url.com/dream_image.png"  # update this if auto-uploaded
+        image_url=url 
     )
 
     print("\n✅ DreamWeaver.AI pipeline complete!")

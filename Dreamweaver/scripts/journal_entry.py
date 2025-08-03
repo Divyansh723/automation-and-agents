@@ -7,6 +7,7 @@ def extract_section(content, start_tags, end_tags=None):
     """
     Extract a section from content using multiple possible start and end tag styles.
     """
+    content = content.replace("  ", " ").replace("*", "") 
     start_idx = end_idx = -1
 
     for tag in start_tags:
@@ -74,7 +75,7 @@ def save_to_notion(
 
     journal_summary = extract_section(
         analysis,
-        ["6. **Journal Entry Summary (1st person, poetic tone):**", "6. Journal Entry Summary:"]
+        ["6. **Journal Entry Summary (1st person, poetic tone):**", "6. Journal Entry Summary:","6. Journal Entry Summary (1st person, poetic tone):"]
     )
 
     # 📝 Push to Notion
